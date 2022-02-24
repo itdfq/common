@@ -5,12 +5,14 @@ import org.redisson.config.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author GodChin
  * @date 2022/2/24 9:48
  * @email 909256107@qq.com
  */
+@Configuration
 public class RedissonConfig {
 
     @Autowired
