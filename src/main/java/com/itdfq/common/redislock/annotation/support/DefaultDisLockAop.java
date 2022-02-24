@@ -68,12 +68,15 @@ public class DefaultDisLockAop implements DisLockAop {
             }
             return null;
         } finally {
-            rlock.unlock();
+            if (rlock != null) {
+                rlock.unlock();
+            }
         }
     }
 
     /**
      * 尝试获取锁
+     *
      * @param rlock
      * @param redisLock
      * @return
@@ -128,7 +131,6 @@ public class DefaultDisLockAop implements DisLockAop {
                 .map(str -> parseExpression(evaluationContext, str))
                 .orElse(getDefaultKey(joinPoint));
     }
-
 
 
     /**
