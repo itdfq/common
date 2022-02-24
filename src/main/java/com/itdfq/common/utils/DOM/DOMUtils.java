@@ -1,6 +1,7 @@
-package com.itdfq.common.utils;
+package com.itdfq.common.utils.DOM;
 
 
+import com.itdfq.common.Exception.BizException;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -49,8 +50,8 @@ public class DOMUtils {
      * 通过xml字符获取document文档
      *
      * @param xmlstr 要序列化的xml字符
-     * @throws DocumentException
      * @return 返回文档对象
+     * @throws DocumentException
      */
     public static Document getXMLByString(String xmlstr) throws DocumentException {
         if (xmlstr == "" || xmlstr == null) {
@@ -131,8 +132,10 @@ public class DOMUtils {
      * @return 新增节点
      */
     public static Element addChild(Element parent, String childName, String childValue) {
-        Element child = parent.addElement(childName);// 添加节点元素
-        child.setText(childValue == null ? "" : childValue); // 为元素设值
+        // 添加节点元素
+        Element child = parent.addElement(childName);
+        // 为元素设值
+        child.setText(childValue == null ? "" : childValue);
         return child;
     }
 
@@ -145,15 +148,18 @@ public class DOMUtils {
      */
     public static String documentToString(Document document, String charset) {
         StringWriter stringWriter = new StringWriter();
-        OutputFormat format = OutputFormat.createPrettyPrint();// 获得格式化输出流
-        format.setEncoding(charset);// 设置字符集,默认为UTF-8
-        XMLWriter xmlWriter = new XMLWriter(stringWriter, format);// 写文件流
+        // 获得格式化输出流
+        OutputFormat format = OutputFormat.createPrettyPrint();
+        // 设置字符集,默认为UTF-8
+        format.setEncoding(charset);
+        // 写文件流
+        XMLWriter xmlWriter = new XMLWriter(stringWriter, format);
         try {
             xmlWriter.write(document);
             xmlWriter.flush();
             xmlWriter.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new BizException(e.getMessage());
         }
         return stringWriter.toString();
     }
@@ -186,8 +192,7 @@ public class DOMUtils {
         } catch (DocumentException e) {
             e.printStackTrace();
         }
-        Element rootElement = document != null ? document.getRootElement() : null;
-        return rootElement;
+        return document != null ? document.getRootElement() : null;
     }
 
     /**
@@ -227,10 +232,10 @@ public class DOMUtils {
      *
      * @param parent 父节点
      * @param tag    想要获取的子节点
-     * @throws
      * @return 返回子节点
+     * @throws
      */
-    public final static String getTextTrimNotNull(Element parent, String tag) {
+    public static String getTextTrimNotNull(Element parent, String tag) {
         Element e = parent.element(tag);
         if (e == null) {
             throw new NullPointerException("节点为空");
@@ -244,10 +249,10 @@ public class DOMUtils {
      *
      * @param parent 父节点
      * @param tag    想要获取的子节点
-     * @throws
      * @return 子节点
+     * @throws
      */
-    public final static Element elementNotNull(Element parent, String tag) {
+    public static Element elementNotNull(Element parent, String tag) {
         Element e = parent.element(tag);
         if (e == null) {
             throw new NullPointerException("节点为空");
