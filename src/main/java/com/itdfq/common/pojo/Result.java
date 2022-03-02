@@ -67,5 +67,12 @@ public class Result<T> implements Serializable {
         return Boolean.FALSE;
     }
 
-
+    @Override
+    public String toString() {
+        return "Result{" +
+                "msg='" + msg + '\'' +
+                ", code=" + code +
+                ", data=" + data +
+                '}';
+    }
 }
