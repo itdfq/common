@@ -1,8 +1,8 @@
-package com.itdfq.common.apiencry.annotition.support;
+package com.itdfq.common.apiencory.annotition.support;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.itdfq.common.apiencry.annotition.SecurityParameter;
+import com.itdfq.common.apiencory.annotition.SecurityParameter;
 import com.itdfq.common.utils.encry.AesEncryptUtils;
 import com.itdfq.common.utils.encry.RSAUtils;
 import lombok.extern.slf4j.Slf4j;

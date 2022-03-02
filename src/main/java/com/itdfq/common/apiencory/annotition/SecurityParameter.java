@@ -1,4 +1,4 @@
-package com.itdfq.common.apiencry.annotition;
+package com.itdfq.common.apiencory.annotition;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

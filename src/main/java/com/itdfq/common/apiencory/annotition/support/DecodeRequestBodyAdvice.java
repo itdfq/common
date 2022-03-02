@@ -1,10 +1,10 @@
-package com.itdfq.common.apiencry.annotition.support;
+package com.itdfq.common.apiencory.annotition.support;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import com.itdfq.common.Exception.BizException;
-import com.itdfq.common.apiencry.annotition.SecurityParameter;
+import com.itdfq.common.apiencory.annotition.SecurityParameter;
 import com.itdfq.common.utils.encry.AesEncryptUtils;
 import com.itdfq.common.utils.encry.RSAUtils;
 import lombok.extern.slf4j.Slf4j;
