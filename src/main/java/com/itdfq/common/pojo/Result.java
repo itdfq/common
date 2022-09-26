@@ -10,18 +10,29 @@ import java.io.Serializable;
 public class Result<T> implements Serializable {
     private static final int SUCCESS_CODE = 200;
     private static final int FAIL_CODE = 9999;
+    private static final long DEFAULT_COUNT = 1;
     private String msg;
     private Integer code;
+    private long count;
     private T data;
 
     public Result() {
 
     }
 
-    public Result(String msg, Integer code, T data) {
+    public Result(String msg, Integer code, long count, T data) {
         this.msg = msg;
         this.code = code;
+        this.count = count;
         this.data = data;
+    }
+
+    public long getCount() {
+        return count;
+    }
+
+    public void setCount(long count) {
+        this.count = count;
     }
 
     public T getData() {
@@ -49,15 +60,27 @@ public class Result<T> implements Serializable {
     }
 
     public static Result fail(String msg) {
-        return new Result(msg, FAIL_CODE, null);
+        return new Result(msg, FAIL_CODE,0, null);
     }
 
     public static Result success(Object data) {
-        return new Result<>(null, SUCCESS_CODE, data);
+        return new Result<>(null, SUCCESS_CODE, DEFAULT_COUNT,data);
+    }
+
+    public static Result success(Object data, long count) {
+        return new Result<>(null, SUCCESS_CODE, count, data);
+    }
+
+    public static Result success(String msg, Object data, long count) {
+        return new Result<>(msg, SUCCESS_CODE, count, data);
+    }
+
+    public static Result success(String msg, Integer code, Object data, long count) {
+        return new Result<>(msg, code, count, data);
     }
 
     public static Result success() {
-        return new Result(null, SUCCESS_CODE, null);
+        return new Result(null, SUCCESS_CODE,0, null);
     }
 
     public Boolean isSuccess() {
@@ -73,6 +96,7 @@ public class Result<T> implements Serializable {
                 "msg='" + msg + '\'' +
                 ", code=" + code +
                 ", data=" + data +
+                ", count=" + count +
                 '}';
     }
 }
