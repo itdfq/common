@@ -9,9 +9,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
+ * 金额小数处理保留两位小数
  * @Author: QianMo
  * @Date: 2021/11/16 13:01
- * @Description:金额小数处理保留两位小数
+ * @Description:
  */
 public class BigDecimalSerialize extends JsonSerializer<BigDecimal> {
 
