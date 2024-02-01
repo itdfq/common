@@ -14,6 +14,13 @@
     </properties>
 
     <dependencies>
+        <!--okHttp-->
+                <dependency>
+                    <groupId>com.squareup.okhttp3</groupId>
+                    <artifactId>okhttp</artifactId>
+                    <version>3.3.0</version>
+                </dependency>
+
 <!--        redisson-->
         <!--        Redisson-->
         <dependency>

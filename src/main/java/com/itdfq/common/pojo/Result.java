@@ -59,19 +59,19 @@ public class Result<T> implements Serializable {
         this.data = data;
     }
 
-    public static Result fail(String msg) {
-        return new Result(msg, FAIL_CODE,0, null);
+    public static <T> Result<T> fail(String msg) {
+        return new Result<T>(msg, FAIL_CODE,0, null);
     }
 
     public static Result success(Object data) {
         return new Result<>(null, SUCCESS_CODE, DEFAULT_COUNT,data);
     }
 
-    public static Result success(Object data, long count) {
-        return new Result<>(null, SUCCESS_CODE, count, data);
+    public static <T> Result success(T data, long count) {
+        return new Result<T>(null, SUCCESS_CODE, count, data);
     }
 
-    public static Result success(String msg, Object data, long count) {
+    public static <T> Result success(String msg, T data, long count) {
         return new Result<>(msg, SUCCESS_CODE, count, data);
     }
 
