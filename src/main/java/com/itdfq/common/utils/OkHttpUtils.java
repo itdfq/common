@@ -5,12 +5,7 @@ import com.alibaba.fastjson.PropertyNamingStrategy;
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.itdfq.common.Exception.BizException;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.Headers;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import okhttp3.*;
 import org.junit.platform.commons.util.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
@@ -187,10 +182,10 @@ public class OkHttpUtils {
                 sb.append("&").append(entry.getKey()).append("=").append(entry.getValue());
             }
         }
-        if (StringUtils.isBlank(jsonStr)){
-            jsonStr="";
+        RequestBody body = null;
+        if (StringUtils.isNotBlank(jsonStr)) {
+            body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), jsonStr);
         }
-        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), jsonStr);
         Headers.Builder header = new Headers.Builder();
         if (Objects.nonNull(headersMap) && !headersMap.isEmpty()) {
             headersMap.forEach(header::add);
