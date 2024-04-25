@@ -13,3 +13,4 @@
 ##### [基于注解的接口加密解密](https://gitee.com/godchin/common/blob/master/src/main/java/com/itdfq/common/apiencry/annotition/README.md)
 
 
+[![](https://jitpack.io/v/com.gitee.godchin/common.svg)](https://jitpack.io/#com.gitee.godchin/common)
