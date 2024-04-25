@@ -6,6 +6,7 @@ import com.alibaba.fastjson.parser.ParserConfig;
 import com.itdfq.common.Exception.BizException;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
+import okhttp3.internal.http.HttpMethod;
 import org.junit.platform.commons.util.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
@@ -182,8 +183,12 @@ public class OkHttpUtils {
                 sb.append("&").append(entry.getKey()).append("=").append(entry.getValue());
             }
         }
-        RequestBody body = null;
-        if (StringUtils.isNotBlank(jsonStr)) {
+        RequestBody body =null;
+        // 如果是要求body的请求,必须设置body，否则请求会出错，非body的请求设置为null
+        if (HttpMethod.requiresRequestBody(methodName)) {
+            if (StringUtils.isBlank(jsonStr)) {
+                jsonStr = "";
+            }
             body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), jsonStr);
         }
         Headers.Builder header = new Headers.Builder();
