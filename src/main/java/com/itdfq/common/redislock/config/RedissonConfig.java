@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.Resource;
+
 /**
  * @author GodChin
  * @date 2022/2/24 9:48
@@ -15,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RedissonConfig {
 
-    @Autowired
+    @Resource
     private RedisProperties redisProperties;
 
 
