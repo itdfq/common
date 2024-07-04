@@ -21,6 +21,7 @@
         <version>3.3.0</version>
     </dependency>
 
+
 <!--        redisson-->
         <!--        Redisson-->
         <dependency>
@@ -33,6 +34,16 @@
                     <groupId>com.fasterxml.jackson.core</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.17</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.17</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
