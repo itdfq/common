@@ -17,7 +17,9 @@ import org.w3c.dom.Text;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * xml工具类
@@ -67,11 +69,20 @@ public class XmlTransFormUtils {
         @XmlProperty(xmlKey = "book")
         private List<String> bookList;
 
+        @XmlProperty(xmlKey = "sex")
+        private Boolean sex;
+
+        /**
+         * map类型 暂时只支持 基本类型，不能嵌套对象</>
+         */
+        @XmlProperty(contentObj = Map.class,xmlKey = "map")
+        private Map<String, String> map;
+
     }
 
 
     public static void main(String[] args) {
-        //举例测试对象
+        // 举例测试对象
         Student student = new Student();
         student.setName("小明");
         student.setAge(18);
@@ -83,13 +94,20 @@ public class XmlTransFormUtils {
         student2.setName("小红");
         student2.setAge(23);
         student2.setAddress("成华大道");
+        student2.setSex(true);
         student2.setBookList(Arrays.asList("java", "spring"));
+        Map<String, String> map = new HashMap<>();
+        map.put("qq", "123131");
+        map.put("wx","微信号o");
+        student2.setMap(map);
         student.setOther(Arrays.asList(student2, student1));
+
         String xmlParseObject = getXmlParseObject(student);
         System.out.println(xmlParseObject);
         System.out.println("----------");
         String listXml  = getXmlParseCollection(Arrays.asList(student1, student2),"Student");
         System.out.println(listXml);
+
         //<?xml version="1.0" encoding="UTF-8" standalone="no"?>
         // <xml>
         //   <name>小明</name>
@@ -100,6 +118,11 @@ public class XmlTransFormUtils {
         //     <REAL_ADRESS>成华大道</REAL_ADRESS>
         //     <book>java</book>
         //     <book>spring</book>
+        //     <sex>true</sex>
+        //     <map>
+        //       <qq>123131</qq>
+        //       <wx>微信号o</wx>
+        //     </map>
         //   </other>
         //   <other>
         //     <name>小张</name>
@@ -122,6 +145,11 @@ public class XmlTransFormUtils {
         //     <REAL_ADRESS>成华大道</REAL_ADRESS>
         //     <book>java</book>
         //     <book>spring</book>
+        //     <sex>true</sex>
+        //     <map>
+        //       <qq>123131</qq>
+        //       <wx>微信号o</wx>
+        //     </map>
         //   </Student>
         // </xml>
     }
@@ -138,7 +166,6 @@ public class XmlTransFormUtils {
         Element root = document.createElement("xml");
         document.appendChild(root);
         addXml(root, o, document, null);
-       //打印xml
         return getStr(document);
 
     }
@@ -155,7 +182,6 @@ public class XmlTransFormUtils {
             return null;
         }
     }
-
     /**
      * 获取集合对象xml
      *
@@ -169,7 +195,6 @@ public class XmlTransFormUtils {
         document.appendChild(root);
         addXml(root, o, document, collectionName);
         return getStr(document);
-
 
     }
 
@@ -186,7 +211,7 @@ public class XmlTransFormUtils {
         if (obj instanceof List) {
             List<?> list = (List<?>) obj;
             for (Object o : list) {
-                if (collectionName!=null&& !collectionName.isEmpty()) {
+                if (StringUtils.isNoneBlank(collectionName)) {
                     Element element = document.createElement(collectionName);
                     root.appendChild(element);
                     addXml(element, o, o.getClass(), document);
@@ -215,7 +240,7 @@ public class XmlTransFormUtils {
                 continue;
             }
             // 如果随机性中的contentClazz传入的对象包含了PassiveMsg注解,表示的是嵌套对象需要进行迭代生成xml
-            if (contentedObj.isAnnotationPresent(XmlObject.class)) {
+            if (contentedObj.isAnnotationPresent(XmlObject.class) && !(o instanceof Map)) {
                 // Element e = document.createElement(xmlKey);
                 // root.appendChild(e);
                 addXml(root, o, document, xmlKey);
@@ -223,14 +248,29 @@ public class XmlTransFormUtils {
             }
             if (o instanceof List) {
                 List<?> list = (List<?>) o;
-                //如果进入到这里说明 不是嵌套对象类型的集合,直接生成xml
+                // 如果进入到这里说明 不是嵌套对象类型的集合,直接生成xml
                 for (Object obj1 : list) {
                     Element element = document.createElement(xmlKey);
                     root.appendChild(element);
                     Text tName = document.createTextNode(obj1.toString());
                     element.appendChild(tName);
                 }
+            } else if (o instanceof Map) {
+                Map<Object, Object> map = (Map<Object, Object>) o;
+                //如果map集合 有xmlKey属性，就在最外层包裹一层 <xmlkey></xmlKey>
+                if (xmlKey!=null && !xmlKey.isEmpty()) {
+                    Element element = document.createElement(xmlKey);
+                    root.appendChild(element);
+                    root=element;
+                }
+                for (Map.Entry<Object, Object> entry : map.entrySet()) {
+                    Element element = document.createElement(entry.getKey().toString());
+                    root.appendChild(element);
+                    Text tName = document.createTextNode(entry.getValue().toString());
+                    element.appendChild(tName);
+                }
             } else {
+
                 Element element = document.createElement(xmlKey);
                 root.appendChild(element);
                 Text tName = document.createTextNode(o.toString());
@@ -260,5 +300,6 @@ public class XmlTransFormUtils {
         }
         return invoke;
     }
+
 
 }
