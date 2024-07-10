@@ -220,6 +220,12 @@ public class XmlTransFormUtils {
                 addXml(root, o, o.getClass(), document);
             }
         } else {
+            //这种情况 可能是 List<Student>
+            if (collectionName!=null&&(!collectionName.isEmpty())){
+                Element element = document.createElement(collectionName);
+                root.appendChild(element);
+                root=element;
+            }
             addXml(root, obj, obj.getClass(), document);
         }
 
