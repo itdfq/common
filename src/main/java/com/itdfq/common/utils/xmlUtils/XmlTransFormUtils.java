@@ -211,7 +211,7 @@ public class XmlTransFormUtils {
         if (obj instanceof List) {
             List<?> list = (List<?>) obj;
             for (Object o : list) {
-                if (StringUtils.isNoneBlank(collectionName)) {
+                if (collectionName!=null&&!collectionName.isEmpty()) {
                     Element element = document.createElement(collectionName);
                     root.appendChild(element);
                     addXml(element, o, o.getClass(), document);
