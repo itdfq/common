@@ -264,14 +264,16 @@ public class XmlTransFormUtils {
             } else if (o instanceof Map) {
                 Map<Object, Object> map = (Map<Object, Object>) o;
                 //如果map集合 有xmlKey属性，就在最外层包裹一层 <xmlkey></xmlKey>
+                //避免影响到其他root
+                Element mapRoot = root;
                 if (xmlKey!=null && !xmlKey.isEmpty()) {
                     Element element = document.createElement(xmlKey);
                     root.appendChild(element);
-                    root=element;
+                    mapRoot=element;
                 }
                 for (Map.Entry<Object, Object> entry : map.entrySet()) {
                     Element element = document.createElement(entry.getKey().toString());
-                    root.appendChild(element);
+                    mapRoot.appendChild(element);
                     Text tName = document.createTextNode(entry.getValue().toString());
                     element.appendChild(tName);
                 }
