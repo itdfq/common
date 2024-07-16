@@ -14,7 +14,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -166,7 +171,7 @@ public class XmlTransFormUtils {
         Element root = document.createElement("xml");
         document.appendChild(root);
         addXml(root, o, document, null);
-        return getStr(document);
+        return documentToString(document);
 
     }
 
@@ -287,6 +292,23 @@ public class XmlTransFormUtils {
 
 
         }
+    }
+
+    private static String documentToString(Document document) {
+        try {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            StringWriter writer = new StringWriter();
+            transformer.transform(new DOMSource(document), new StreamResult(writer));
+            String string = writer.toString();
+            //xml中的标签会特殊处理，需要还原
+            String replace = string.replace("&lt;", "<");
+            String replace1 = replace.replace("&gt;", ">");
+            return replace1;
+        } catch (Exception e) {
+            log.error("xml转字符串异常", e);
+        }
+        return null;
     }
 
     /**
