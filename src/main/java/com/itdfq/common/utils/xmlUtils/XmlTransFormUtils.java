@@ -187,6 +187,7 @@ public class XmlTransFormUtils {
             return null;
         }
     }
+
     /**
      * 获取集合对象xml
      *
@@ -300,11 +301,8 @@ public class XmlTransFormUtils {
             Transformer transformer = transformerFactory.newTransformer();
             StringWriter writer = new StringWriter();
             transformer.transform(new DOMSource(document), new StreamResult(writer));
-            String string = writer.toString();
-            //xml中的标签会特殊处理，需要还原
-            String replace = string.replace("&lt;", "<");
-            String replace1 = replace.replace("&gt;", ">");
-            return replace1;
+            return  writer.toString();
+
         } catch (Exception e) {
             log.error("xml转字符串异常", e);
         }
