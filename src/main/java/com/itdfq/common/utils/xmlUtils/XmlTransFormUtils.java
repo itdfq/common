@@ -82,6 +82,11 @@ public class XmlTransFormUtils {
          */
         @XmlProperty(contentObj = Map.class,xmlKey = "map")
         private Map<String, String> map;
+        @XmlProperty(xmlKey = "mapList",contentObj = Map.class)
+        private Map<String,List<String>> maoList;
+
+        @XmlProperty(contentObj = Map.class)
+        private Map<String,List<String>> maoList2;
 
     }
 
@@ -106,12 +111,12 @@ public class XmlTransFormUtils {
         map.put("wx","微信号o");
         student2.setMap(map);
         student.setOther(Arrays.asList(student2, student1));
+        Map<String,List<String>> mapList = new HashMap<>();
+        mapList.put("moreKey", Arrays.asList("123","456"));
+        student2.setMaoList(mapList);
+        student2.setMaoList2(mapList);
+        System.out.println(getXmlParseObject(student2,"Data"));
 
-        String xmlParseObject = getXmlParseObject(student);
-        System.out.println(xmlParseObject);
-        System.out.println("----------");
-        String listXml  = getXmlParseCollection(Arrays.asList(student1, student2),"Student");
-        System.out.println(listXml);
 
         //<?xml version="1.0" encoding="UTF-8" standalone="no"?>
         // <xml>
@@ -161,17 +166,19 @@ public class XmlTransFormUtils {
 
 
     /**
-     * 获取对象xml
-     *
-     * @param o
+     * 解析对象转化为xml
+     * @param o 对象
+     * @param outerName xml最外层的名称
      * @return
      */
-    public static String getXmlParseObject(Object o) {
+    public static String getXmlParseObject(Object o,String outerName) {
+        outerName= outerName!=null&&!outerName.isEmpty() ? outerName : "xml";
         Document document = DocumentHelper.createDocument();
-        Element root = document.createElement("xml");
+        Element root = document.createElement(outerName);
         document.appendChild(root);
         addXml(root, o, document, null);
         return documentToString(document);
+        // return XmlUtil.toStr(document, true);
 
     }
 
@@ -278,10 +285,22 @@ public class XmlTransFormUtils {
                     mapRoot=element;
                 }
                 for (Map.Entry<Object, Object> entry : map.entrySet()) {
-                    Element element = document.createElement(entry.getKey().toString());
-                    mapRoot.appendChild(element);
-                    Text tName = document.createTextNode(entry.getValue().toString());
-                    element.appendChild(tName);
+                    Object key = entry.getKey();
+                    Object value = entry.getValue();
+                    if (value instanceof List){
+                        List<?> list = (List<?>) value;
+                        for(Object obj1:list){
+                            Element element = document.createElement(key.toString());
+                            mapRoot.appendChild(element);
+                            Text tName = document.createTextNode(obj1.toString());
+                            element.appendChild(tName);
+                        }
+                    }else {
+                        Element element = document.createElement(key.toString());
+                        mapRoot.appendChild(element);
+                        Text tName = document.createTextNode(value.toString());
+                        element.appendChild(tName);
+                    }
                 }
             } else {
 
