@@ -2,7 +2,6 @@ package com.itdfq.common.utils.xmlUtils;
 
 
 import com.itdfq.common.Exception.AssertUtils;
-import com.sun.org.apache.xml.internal.security.utils.XMLUtils;
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 import lombok.Data;
@@ -18,7 +17,6 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.util.Arrays;
