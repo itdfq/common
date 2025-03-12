@@ -1,4 +1,4 @@
-package com.itdfq.common.aop.selectMoreIn;
+package com.itdfq.common.aop.moreIn;
 
 import org.springframework.util.CollectionUtils;
 

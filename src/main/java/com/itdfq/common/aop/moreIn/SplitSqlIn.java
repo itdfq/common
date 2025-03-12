@@ -1,4 +1,4 @@
-package com.itdfq.common.aop.selectMoreIn;
+package com.itdfq.common.aop.moreIn;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -26,7 +26,7 @@ public @interface SplitSqlIn {
     Class<? extends ResultProcessor> handlerReturnClass() default MergeFunction.class;
 
     /**
-     * 超过多少开始拆分 >
+     * 超过多少开始拆分
      *
      * @return int
      */
