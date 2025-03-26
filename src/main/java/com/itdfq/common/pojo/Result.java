@@ -1,5 +1,9 @@
 package com.itdfq.common.pojo;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.slf4j.MDC;
+
 import java.io.Serializable;
 
 /**
@@ -7,6 +11,8 @@ import java.io.Serializable;
  * @date: 2022/2/24 14:32
  * @mark: Controller统一返回类
  */
+@Setter
+@Getter
 public class Result<T> implements Serializable {
     private static final int SUCCESS_CODE = 200;
     private static final int FAIL_CODE = 9999;
@@ -15,9 +21,14 @@ public class Result<T> implements Serializable {
     private Integer code;
     private long count;
     private T data;
+    /**扩展字段*/
+    private Object extra;
+
+    private String traceUUID;
 
     public Result() {
-
+        //从线程中获取 uuid
+        this.traceUUID = MDC.get("trace_uuid");
     }
 
     public Result(String msg, Integer code, long count, T data) {
@@ -25,62 +36,31 @@ public class Result<T> implements Serializable {
         this.code = code;
         this.count = count;
         this.data = data;
-    }
-
-    public long getCount() {
-        return count;
-    }
-
-    public void setCount(long count) {
-        this.count = count;
-    }
-
-    public T getData() {
-        return this.data;
-    }
-
-    public String getMsg() {
-        return this.msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public void setData(T data) {
-        this.data = data;
+        this.traceUUID = MDC.get("trace_uuid");
     }
 
     public static <T> Result<T> fail(String msg) {
         return new Result<T>(msg, FAIL_CODE,0, null);
     }
 
-    public static Result success(Object data) {
-        return new Result<>(null, SUCCESS_CODE, DEFAULT_COUNT,data);
+    public static <T> Result<T> success(T data) {
+        return new Result<T>(null, SUCCESS_CODE, DEFAULT_COUNT, data);
     }
 
-    public static <T> Result success(T data, long count) {
+    public static <T> Result<T> success(T data, long count) {
         return new Result<T>(null, SUCCESS_CODE, count, data);
     }
 
-    public static <T> Result success(String msg, T data, long count) {
+    public static <T> Result<T> success(String msg, T data, long count) {
         return new Result<>(msg, SUCCESS_CODE, count, data);
     }
 
-    public static Result success(String msg, Integer code, Object data, long count) {
-        return new Result<>(msg, code, count, data);
+    public static <T> Result<T> success(String msg, Integer code, T data, long count) {
+        return new Result<T>(msg, code, count, data);
     }
 
-    public static Result success() {
-        return new Result(null, SUCCESS_CODE,0, null);
+    public static <T> Result<T> success() {
+        return new Result<>(null, SUCCESS_CODE,0, null);
     }
 
     public Boolean isSuccess() {
@@ -95,8 +75,10 @@ public class Result<T> implements Serializable {
         return "Result{" +
                 "msg='" + msg + '\'' +
                 ", code=" + code +
-                ", data=" + data +
                 ", count=" + count +
+                ", data=" + data +
+                ", extra=" + extra +
+                ", traceUUID='" + traceUUID + '\'' +
                 '}';
     }
 }
