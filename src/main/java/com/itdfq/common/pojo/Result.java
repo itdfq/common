@@ -39,12 +39,16 @@ public class Result<T> implements Serializable {
         this.traceUUID = MDC.get("trace_uuid");
     }
 
+    public static Result success(Object data) {
+        return new Result<>(null, SUCCESS_CODE, DEFAULT_COUNT,data);
+    }
     public static <T> Result<T> fail(String msg) {
         return new Result<T>(msg, FAIL_CODE,0, null);
     }
 
-    public static <T> Result<T> success(T data) {
-        return new Result<T>(null, SUCCESS_CODE, DEFAULT_COUNT, data);
+
+    public static Result success(String msg, Integer code, Object data, long count) {
+        return new Result<>(msg, code, count, data);
     }
 
     public static <T> Result<T> success(T data, long count) {
@@ -55,9 +59,7 @@ public class Result<T> implements Serializable {
         return new Result<>(msg, SUCCESS_CODE, count, data);
     }
 
-    public static <T> Result<T> success(String msg, Integer code, T data, long count) {
-        return new Result<T>(msg, code, count, data);
-    }
+
 
     public static <T> Result<T> success() {
         return new Result<>(null, SUCCESS_CODE,0, null);
